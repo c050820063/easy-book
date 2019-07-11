@@ -20,7 +20,7 @@ class Header extends React.Component<any, State> {
   constructor(props: any) {
     super(props)
     this.state = {
-      name: '13'
+      name: ''
     }
   }
   public render() {
@@ -42,6 +42,9 @@ class Header extends React.Component<any, State> {
             <li >
               <div className="search">
                 <input placeholder="搜索" type="text" />
+                <div className="searchIcon">
+                  <i className="iconfont iconsearch1187938easyiconnet" />
+                </div>
               </div>
             </li>
           </ul>
