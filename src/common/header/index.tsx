@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { CSSTransition } from 'react-transition-group';
+import { actionCreators } from './store';
 import './style.less';
 
 // export interface IProps {
@@ -12,18 +15,19 @@ import './style.less';
 
 // }
 
-interface State {
-  name: string
+interface Istate {
+  focused: boolean
 }
 
-class Header extends React.Component<any, State> {
+class Header extends React.Component<any, Istate> {
   constructor(props: any) {
     super(props)
-    this.state = {
-      name: ''
-    }
   }
   public render() {
+    const {
+      focused,
+      handleChangeFocused,
+    } = this.props
     return (
       <div className="navbar">
         <a href="/" className="logo" />
@@ -40,12 +44,23 @@ class Header extends React.Component<any, State> {
               </div>
             </li>
             <li >
-              <div className="search">
-                <input placeholder="搜索" type="text" />
-                <div className="searchIcon">
-                  <i className="iconfont iconsearch1187938easyiconnet" />
+              <CSSTransition
+                in={focused}
+                timeout={300}
+                classNames="slide"
+              >
+                <div className={`search ${focused ? 'focused' : ''}`}>
+                  <input
+                    placeholder="搜索"
+                    type="text"
+                    onFocus={handleChangeFocused.bind(this, true)}
+                    onBlur={handleChangeFocused.bind(this, false)}
+                  />
+                  <div className="searchIcon">
+                    <i className="iconfont iconsearch1187938easyiconnet" />
+                  </div>
                 </div>
-              </div>
+              </CSSTransition>
             </li>
           </ul>
         </div>
@@ -54,4 +69,18 @@ class Header extends React.Component<any, State> {
   }
 }
 
-export default Header
+const mapStateToProps = (state: any): Istate => ({
+  focused: state.Header.focused
+})
+
+const mapDispatchToProps = (dispatch: any): {} => {
+  return {
+    handleChangeFocused(state: boolean) {
+      console.log(state)
+      dispatch(actionCreators.getInputChangeAction(state))
+      // console.log()
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
