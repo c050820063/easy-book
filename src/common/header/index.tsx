@@ -20,11 +20,11 @@ interface Istate {
 }
 
 interface Iprops {
-  focused: boolean,
+  focused?: boolean,
   handleChangeFocused: (state: boolean) => void
 }
 
-class Header extends React.Component<Iprops, Istate> {
+class Header extends React.Component<Iprops> {
   public render() {
     const {
       focused,
@@ -69,16 +69,17 @@ class Header extends React.Component<Iprops, Istate> {
       </div>
     )
   }
+
 }
 
 const mapStateToProps = (state: { Header: Istate }): Istate => ({
   focused: state.Header.focused
 })
 
-const mapDispatchToProps = (dispatch: ({}) => void): {} => {
+const mapDispatchToProps = (dispatch: any): Iprops => {
   return {
     handleChangeFocused(state: boolean): void {
-      console.log(actionCreators.getInputChangeAction(state))
+      // console.log(actionCreators.getInputChangeAction(state))
       dispatch(actionCreators.getInputChangeAction(state))
     }
   }
